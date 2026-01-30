@@ -1,0 +1,34 @@
+\section{Problem Statement}
+
+Define the following quantities,
+\begin{itemize}
+    \item States: $\vs\in\mathcal{S}\subset\mathbb{R}^{n_s}$,
+    \item Outputs: $\vz\in\cZ\subset\mathbb{R}^{n_z}$,
+    \item Controls: $\vu\in\mathcal{U}\subset\mathbb{R}^{n_u}$,
+    \item Parameters: $\vp\in\cP\subset\mathbb{R}^{n_p}$,
+    \item Reference signal: $\vr(t)\in\cR\subset\mathbb{R}^{n_r}$,
+    \item Time: $t\in\left[t_0,t_f\right]\subset\mathcal{T}$
+\end{itemize}
+The states are governed by the following model of the plant,
+\begin{subequations}
+    \begin{align}
+        \dot{\vs} &= \vf\left(\vs,\vu;\vp\right)\\
+        \vz &= \vh\left(\vs;\vp\right)
+    \end{align}
+\end{subequations}
+The main goal of regulation is to design a feedback controller based on measured signal errors, so that the controlled output $\vz(t)$ tracks a desired reference signal $\vr(t)$, despite the presence of \emph{un-observable} model variations $\vdelta$ which may be unknown during controller design. Assume the existence of a reachable terminal state and control pair $\left(\vs^*(t_f),\vu^*(t_f)\right)\in\mathbb{R}^{n_s}\times\mathbb{R}^{n_u}$, as well as observable $\vh\left(\vs^*(t_f);\vp\right)\in\mathbb{R}^{n_z}$ such that,
+\begin{subequations}
+    \begin{align}
+        \vs_{\delta} &= \vs(t) - \vs^*(t_f)\\
+        \vu_{\delta} &= \vu(t) - \vu^*(t_f)\\
+        \vz_{\delta} &= \vz(t) - \vh\left(\vs^*(t_f);\vp\right)
+    \end{align}
+\end{subequations}
+The perturbed dynamics can be expressed as,
+\begin{subequations}
+    \begin{align}
+        \dot{\vs}_{\delta} &= \vf\left(\vs_{\delta} + \vs^*(t_f),\vu_{\delta} + \vu^*(t_f);\vp + \vdelta\right)\\
+        \vz_{\delta} &= \vh\left(\vs_{\delta} + \vs^*(t_f);\vp + \vdelta\right)
+    \end{align}
+\end{subequations}
+Therefore, the regulation task is to drive $\vz_{\delta}(t)$ to zero despite the presence of the unknown perturbation $\vdelta$.

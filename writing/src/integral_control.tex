@@ -1,0 +1,52 @@
+\section{Integral Control}
+
+In this section, an integral control approach is presented that ensures asymptotic regulation under all parameter perturbations that do not destroy the stability of the closed-loop system. Let $\vr$ be a constant reference that is available online, and set,
+\begin{equation}
+    \vv = \left[\vr,\vp\right]^\top\in\cV=\cR\times\cP
+\end{equation}
+It is desired to design a feedback controller such that,
+\begin{equation}
+    \vz(t)\rightarrow\vr\:\text{as}\:\rightarrow\infty
+\end{equation}
+The regulation task is achieved by stabilizing the system at an equilibrium point where $\vz(t)=\vr$. It is assumed that for each $\vv\in\cV$, there is a unique pair $\left(\vs_{f},\vu_{f}\right)$ that depends continuously on $\vv$ and satisfies the equations,
+\begin{subequations}
+    \begin{align}
+        \vzero &= \vf\left(\vs_{f},\vu_{f};\vp\right)\\
+        \vr &= \vh(\vs_{f};\vp)
+    \end{align}
+\end{subequations}
+so that $\vs_f$ is the desired equilibrium point and $\vu_f$ is the steady-state control that is needed to maintain equilibrium at $\vs_f$.
+
+To introduce integral action, the regulation error is integrated,
+\begin{equation}
+    \dot{\sigma} = \ve(t) = \vz(t) - \vr
+\end{equation}
+and the governing dynamics are augmented as,
+\begin{subequations}
+\label{eqn_augmented_dynamics}
+    \begin{align}
+        \dot{\vs} &= \vf\left(\vs,\vu;\vp\right)\\
+        \dot{\vsigma} &= \vh(\vs;\vp) - \vr
+    \end{align}
+\end{subequations}
+It is clear that integrating $\ve(t)$ requires both $\vz(t)$ and $\vr$ to be available online. The control task now is to design a stabilizing feedback controller that stabilizes the augmented state model at an equilibrium point $\left(\vs_f,\vsigma_f\right)$ where $\vsigma_f$ produces the desired $\vu_f$.
+
+The integral form of the controller comprises two components: the \emph{integrator} and the \emph{stabilizer}. The integrator is sometimes called the internal model, since it duplicates the model of the equation $\dot{\vv}=\vzero$, which generates the exogenous constant signal $\vv$. The stabilizer depends on the measured signal. For example, in the case of state feedback; that is, when $\vz(t)=\vs$, the stabilizing controller takes the form,
+\begin{equation}
+    \vu(t) = \vgamma\left(\vs,\vsigma,\ve\right)
+\end{equation}
+where $\vgamma$ is designed such that there is a unique $\vsigma_f$ that satisfies the equation,
+\begin{equation}
+    \vgamma\left(\vs_f,\vsigma_f,\vzero\right) = \vu^*(t_f)
+\end{equation}
+Therefore, the closed-loop system,
+\begin{subequations}
+    \begin{align}
+        \dot{\vs} &= \vf\left(\vs,\vgamma(\vs,\vsigma,\ve);\vp\right)\\
+        \dot{\vsigma} &= \vh(\vs;\vp) - \vr\\
+        \ve &= \vz(t) - \vr
+    \end{align}
+\end{subequations}
+has an asymptotically stable equilibrium point at $\left(\vs_f,\vsigma_f\right)$. At the equilibrium point, $\vz = \vr$, irrespective of the parameter $\vp$. Hence, asymptotic regulation is achieved for all initial states in the region of attraction of $\left(\vs_f,\vsigma_f\right)$.
+
+The fact that the integral controller is robust to all parameter perturbations that do not destroy the stability of the closed-loop system can be intuitively explained as follows: The feedback controller creates an asymptotically-stable equilibrium point. At this point, all signals must be constant. For the integrator $\dot{\vsigma} = \ve$ to have a constant output $\vsigma$, its input $\ve(t)$ must be zero. Therefore, the inclusion of the integrator forces the regulation error to be zero at equilibrium. Parameter perturbations will change the equilibrium point, but the condition $\ve=0$ at equilibrium is maintained. Thus, as long as the perturbed equilibrium point remains asymptotically stable, regulation will be achieved.

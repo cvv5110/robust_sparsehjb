@@ -1,0 +1,16 @@
+\section{Lyapunov Redesign}
+
+Consider the system,
+\begin{equation}
+    \dot{\vs} = \vf\left(t,\vs\right) + \vG\left(t,\vs\right)\left[\vu + \vdelta(t,\vs,\vu)\right]
+\end{equation}
+where $\vf,\vG$, and $\vdelta$ are piecewise continuous in $t$ and locally Lipschitz in $\vs$ and $\vu$. The functions $\vf$ and $\vG$ are known precisely, while the function $\vdelta$ is an unknown function that lumps together various uncertain terms due to model simplifications, parameter uncertainty, and so on. The uncertain term satisfies the \emph{matching condition}. Moreover, the nominal model is given by,
+\begin{equation}
+    \dot{\vs} = \vf\left(t,\vs\right) + \vG\left(t,\vs\right)\vu
+\end{equation}
+for which there exists a feedback control law $\vu = \vmu\left(\vs,t,\vp\right)$ that is optimal with respect to some performance criterion with initial and terminal boundary conditions.
+
+To robustify the nominal control law $\vu = \vmu\left(\vs,t,\vp\right)$ against the uncertain term $\vdelta(t,\vs,\vu)$, a Lyapunov redesign approach is considered. The value function $V(\vs,\vp,t)$ associated with the nominal system satisfies,
+\begin{equation}
+    \frac{dV}{dt} = \frac{\partial V}{\partial t} + \frac{\partial V}{\partial \vs}^T \left[\vf\left(t,\vs\right) + \vG\left(t,\vs\right)\vmu\left(\vs,t,\vp\right)\right] \leq -\ell\left(\vs,\vmu\left(\vs,t,\vp\right)\right)
+\end{equation}

@@ -1,0 +1,22 @@
+\section{Physics-Informed Learning of Robust Output Feedback Regulators}
+
+Consider the following optimal control problem (OCP),
+\begin{subequations}
+    \begin{align}
+        \min_{\vu}\:\mathcal{J} &= \varphi\left(\vs(t_f),t_f\right) + \int_{t_0}^{t_f}\ell\left(\vs,\vu,\vp\right)dt\\
+        \text{s.t.}\: \dot{\vs} &= \vf\left(\vs,\vu;\vp\right)\\
+        \vzero &= \vPsi_f\left(\vs(t_f),t_f;\vp\right)\\
+        \vzero &= \vPsi_0\left(\vs(t_0),t_0;\vp\right)
+    \end{align}
+\end{subequations}
+Solutions to this problem include the optimal trajectories,
+\begin{equation}
+    d_l = \left\{\vs^*_l(t),\vu_l^*(t),\vlambda^*_l(t),\vp_l\right\}_{l=1}^{n_p},\:\forall\:t\in\cT
+\end{equation}
+which extremize the original objective $\cJ$ while satisfying the constraints exactly. The OCP solutions are effectively regulating the non-linear dynamics $\vf$ to a point such that $\vPsi_f = \vzero$.
+
+The value function for the original problem is,
+\begin{equation}
+    V(\vs,\vp,t) = \min_{\vu}\left\{\varphi\left(\vs(t_f),t_f\right) + \int_{t_0}^{t_f}\ell(\vs,\vu,\vp)dt\right\}
+\end{equation}
+however, including the regulation dynamics by considering Eq.~\ref{eqn_augmented_dynamics}, the value function includes the extended state space $\vy = \left[\vs,\vsigma\right]^\top$
