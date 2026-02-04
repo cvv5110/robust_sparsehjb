@@ -1,0 +1,41 @@
+\section{Desensitized Optimal Control}
+
+Desensitized optimal control (DOC) seeks to incorporate sensitivity considerations into the design of optimal reference solutions to design control laws that are less sensitivity to state perturbations and are therefore robust to model-parameter uncertainties. In the DOC approach, the vector of physical states in the standard OCP is augmented by a matrix of sensitivity states -- essentially the transition matrix associated with the physical states -- that capture teh partial derivatives of the physical states at the current time with respect to changes in the physical states at an earlier time. From these sensitivities, the sensitivity of any user-specified smooth function of the physical states evaluated at the final time with respect to perturbations can be evaluated using the chain rule, and the resulting sensitivity can be included in the cost just like any other physical state. 
+
+It is noted that, for any standard OCP, the associated DOC problem also represents an OCP, albeit one of higher dimensionality and greater complexity. That means no new theories need to be developed to solve DOC problems. However, for the numerical treatment of DOC problems, the increased state dimensionality resulting from the added sensitivity state calls for specialized software that exploits the linearity of the sensitivity dynamics.
+
+\subsection{Standard Optimal Control Problem Formulation}
+
+Assume the standard OCP in Mayer form is defined as,
+\begin{subequations}
+    \begin{align}
+        \min_{\vu(t)} & \varphi\left(\vx(t_f),t_f\right)\\
+        \text{subject to} & \dot{\vx} &= \vf\left(\vs,\vu,t\right)\\
+        \vzero &= \vPsi_0\left(\vx(t_0),t_0\right)\\
+        \vzero &= \vPsi_f\left(\vx(t_f),t_f\right)\\
+    \end{align}
+\end{subequations}
+
+\subsection{Review of Sensitivity Analysis}
+
+At the center sensitivity analysis is the Peano theorem, which describes how perturbations in the initial states propagate along the solution of ordinary differential equations.
+
+\paragraph*{Theorem 1} Consider the initial value problem,
+\begin{subequations}
+    \begin{align*}
+        \dot{\vx} &= \vg\left(\vx,t\right)\\
+        \vx(t_0) &= \vx_0
+    \end{align*}
+\end{subequations}
+where $\vx\in\mathbb{R}^{n_x}$ denotes the state vector and $t\in\mathbb{R}$ denotes time. Let the function $\vg\left(\vx,t\right)$ be defined on the open domain $D\subset\mathbb{R}^{n_x}\times\mathbb{R}$ and assume that, throughout its domain $D$, $\vg$ is Lipschitz bounded with respect to $\vx$ and continuous with respect to $t$. Then, for each pair $\left(t_0,\vx_0\right)\in D$, there is an interval $\mathcal{I} = [a,b]$ such that the solution $\vx(t) = \vX\left(t | t_0, \vx_0\right)$ exists on $\mathcal{I}$ and is unique. Moreover,
+\begin{equation}
+    \frac{\partial^k \vg(\vx,t)}{\partial \vx^k},\quad \frac{\partial^k \vX(t | t_0,\vx_0)}{\partial\vx_0^k}
+\end{equation}
+and the $n_x \times n_x$ sensitivity matrix exists,
+\begin{equation}
+    \vS(t | t_0,\vx_0) = \frac{\partial \vX(t | t_0,\vx_0)}{\partial \vx_0}
+\end{equation}
+and is the solution to the IVP,
+\begin{equation}
+    \dot{\vS}(t|t_0,\vx_0) = \frac{\partial\vg(\vx,t)}{\partial\vx}\Bigg|_{\vx=\vX(t|t_0,\vx_0)} \vS(t|t_0,\vx_0)
+\end{equation}
