@@ -16,7 +16,7 @@ The states are governed by the following model of the plant,
         \vz &= \vh\left(\vs;\vp\right)
     \end{align}
 \end{subequations}
-The main goal of regulation is to design a feedback controller based on measured signal errors, so that the controlled output $\vz(t)$ tracks a desired reference signal $\vr(t)$, despite the presence of \emph{un-observable} model variations $\vdelta$ which may be unknown during controller design. Assume the existence of a reachable terminal state and control pair $\left(\vs^*(t_f),\vu^*(t_f)\right)\in\mathbb{R}^{n_s}\times\mathbb{R}^{n_u}$, as well as observable $\vh\left(\vs^*(t_f);\vp\right)\in\mathbb{R}^{n_z}$ such that,
+The main goal of achieving robustness is to design a non-linear feedback controller based on measured signal errors, so that the controlled output $\vz(t)$ tracks a desired reference signal $\vr(t)$, despite the presence of \emph{un-modeled} variations $\vdelta$ which may be unknown during controller design. Assume the existence of a reachable terminal state and control pair $\left(\vs^*(t_f),\vu^*(t_f)\right)\in\mathbb{R}^{n_s}\times\mathbb{R}^{n_u}$, as well as observable $\vh\left(\vs^*(t_f);\vp\right)\in\mathbb{R}^{n_z}$ such that,
 \begin{subequations}
     \begin{align}
         \vs_{\delta} &= \vs(t) - \vs^*(t_f)\\

@@ -1,0 +1,88 @@
+\section{Problem Statement}
+
+Define the states, controls, model parameters, and boundary constraints as,
+\begin{subequations}
+    \begin{align}
+        \vs &= \left(x,y,v\right)^\top\in\mathbb{R}^3\\
+        \vu &= \left(\theta\right)\in\mathbb{R}\\
+        \vp &= \left(g\right)\in\mathbb{R}\\
+        \vPsi_0 &= \vP_{\Psi_0}\vs(t_0) - \tilde{\vs}_0\\
+        \vPsi_f &= \vP_{\Psi_f}\vs(t_f) - \tilde{\vs}_f
+    \end{align}
+\end{subequations}
+with governing dynamics,
+\begin{subequations}
+    \begin{align*}
+        \dot{x} &= v\cos(\theta)\\
+        \dot{y} &= v\sin(\theta)\\
+        \dot{v} &= -g\sin(\theta)
+    \end{align*}
+\end{subequations}
+In this work, the sensitivity of the final states of a dynamical system to errors in estimated parameters is minimized. First, define the sensitivity of the dynamics with respect to the parameters,
+\begin{equation}
+    \frac{\partial\vs}{\partial\vp_i} = \frac{\partial\vf}{\partial p_i} + \frac{\partial\vf}{\partial\vs}\frac{\partial\vs}{\partial\vp_i}
+\end{equation}
+where $p_i$ is the $i$-th element of the parameter vector $\vp$. It is desired to design controllers that force the sensitivity of the states at the final time to zero, i.e.,
+\begin{equation}
+    S_{p_i} = \frac{\partial\vs(t_f)}{\partial p_i} = \vzero
+\end{equation}
+The sensitivity dynamics are included as additional state equations,
+\begin{equation}
+    \vs_g = S_{p_i} = \frac{\partial\vs}{\partial p_i} = \int_{t_0}^{t_f} \dot{\vs}_g dt
+\end{equation}
+The new state equation is formed by combining the original states with the sensitivity states,
+\begin{equation}
+    \vy = \begin{bmatrix}
+        \dot{\vs}\\
+        \dot{\vs_g}
+    \end{bmatrix} = \begin{bmatrix}
+        \vf\left(\vs,\vu;\vp\right)\\
+        \frac{\partial\vf}{\partial p_i} + \frac{\partial\vf}{\partial\vs}\vs_g
+    \end{bmatrix}
+\end{equation}
+
+The Jacobian for the brachistochrone problem is,
+\begin{equation}
+    \frac{\partial\vf}{\partial\vs} = \begin{bmatrix}
+        0 & 0 & \cos(\theta)\\
+        0 & 0 & \sin(\theta)\\
+        0 & 0 & 0
+    \end{bmatrix}
+\end{equation}
+Therefore the sensitivity dynamics with $\vS = \left[\frac{\partial x}{\partial p},\frac{\partial y}{\partial p}, \frac{\partial v}{\partial p}\right]$
+\begin{equation}
+    \frac{d\vS}{dt} = \begin{bmatrix}
+        0 \\
+        0 \\
+        -\sin(\theta)
+    \end{bmatrix} + \begin{bmatrix}
+        0 & 0 & \cos(\theta)\\
+        0 & 0 & \sin(\theta)\\
+        0 & 0 & 0
+    \end{bmatrix}\vS = \begin{bmatrix}
+        \cos(\theta)S_v\\
+        \sin(\theta)S_v\\
+        -\sin(\theta)
+    \end{bmatrix}
+\end{equation}
+
+Therefore, for the brachistochrone problem with gravitational uncertainty the sensitivity of the dynamics is,
+\begin{equation}
+    \
+\end{equation}
+and the new augmented dynamics become,
+
+The new boundary conditions are defined as,
+\begin{subequations}
+    \begin{align}
+        \tilde{\vPsi}_0 &= \begin{bmatrix}
+            \vP_{\Psi_0}\vs(t_0) - \tilde{\vs}_0\\
+            \vs_g(t_0) - \vzero
+        \end{bmatrix}\\
+        \tilde{\vPsi}_f &= \begin{bmatrix}
+            \vP_{\Psi_f}\vs(t_f) - \tilde{\vs}_f\\
+            \vs_g(t_f) - \vzero
+        \end{bmatrix}
+    \end{align}
+\end{subequations}
+Therefore, the time-optimal control problem with sensitivity minimization is defined as,
