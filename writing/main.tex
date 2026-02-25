@@ -3,9 +3,9 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{cleveref}
 
-
-\title{Robust SparseHJB}
+\title{Polynomial Chaos for Robust Control}
 \author{Carlos A. Vargas Venegas}
 \date{January 2026}
 
@@ -41,12 +41,17 @@
 \newcommand{\vP}{\mathbf{P}}
 \newcommand{\vS}{\mathbf{S}}
 \newcommand{\vX}{\mathbf{X}}
+\newcommand{\cH}{\mathcal{H}}
 
 \begin{document}
 
 \maketitle
 
-\input{./src/desensitized.tex}
+\begin{abstract}
+    This work leverages a probabilistic approach to design robust feedback controllers for systems with uncertain model parameters. A polynomial chaos expansion is used to represent the uncertain system states and cost functions in terms of finite-dimensional series expansion in the stochastic space. This approach extends the nominal feedback control law to account for the uncertainty in the model parameters, enabling the design of controllers that are robust to such uncertainties and minimize the terminal residual energy relative to a desired target state. Moreover, the proposed discretization over the probability space facilitates the approximation of a minimax optimization problem -- which seeks to minimize the worst-case residual energy as a function of the control parameters -- as a minimization of the expectation and variance of the residual energy over the stochastic space. The proposed method is demonstrated on a time-optimal rest-to-rest maneuver of a spring-mass system, where the uncertain model parameter is the spring stiffness.
+\end{abstract}
+
+\input{./src/polynomial_chaos.tex}
 
 
 \end{document}

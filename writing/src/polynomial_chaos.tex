@@ -1,4 +1,65 @@
-\section{Probabilistic Robust Control}
+\section{Time-Optimal Rest-to-rest Maneuver of a Spring-Mass System}
 
-A probabilistic approach which exploit the domain and distribution of the uncertain model parameters is developed for the design of robust feedback controllers. A polynomial chaos expansion is used to represent uncertain system states and cost functions in terms of finite-dimensional series expansion in the stochastic space. 
+Consider the following second-order system for the scalar displacement $x$ of a mass $m$ attached to a spring with stiffness $k$ and with forcing $u$,
+\begin{equation}
+    m\ddot{x} + kx = ku
+\end{equation}
+subject to initial and terminal conditions,
+\begin{equation}
+    x(0) = x_0, \quad \dot{x}(0) = \dot{x}_0, \quad x(t_f) = 0, \quad \dot{x}(t_f) = 0
+\end{equation}
+The time-optimal maneuver for this system is posed as the following optimal control problem,
+\begin{subequations}
+    \begin{align}
+        \min_{u(\cdot),t_f} \quad & \int_0^{t_f} 1 \, dt \\
+        \text{subject to} \quad & m\ddot{x} + kx = u, \\
+        & x(0) = x_0, \quad \dot{x}(0) = \dot{x}_0, \quad x(t_f) = 0, \quad \dot{x}(t_f) = 0
+    \end{align}\label{eqn_spring_mass_ocp}
+\end{subequations}
+
+A bang-bang solution is known to be optimal for this problem. Therefore, an $\arctan$ smoothing approach on the control input is implemented to approximate the optimal control law.
+
+
+
+
+\section{Re-design of Feedback Control Law via Polynomial Chaos}
+
+Assume the nominal control solution to the time-optimal maneuver is given by,
+\begin{equation}
+    u^*(t) = \arg\min_{u}\left\{\cH\left(\vy^*,u,\vlambda^*,k^*\right)\right\}
+\end{equation}
+which is the solution to the OCP in \cref{eqn_spring_mass_ocp} for a nominal spring stiffness $k^*$. Now, a perturbation to the nominal stiffness is considered, such that the true stiffness is given by $k = k^* + \delta k$. The goal is to re-design the nominal control law $u^*(t)$ to account for the uncertainty in the spring stiffness and minimize the terminal residual energy relative to the desired target state. To this end, a polynomial chaos expansion is used to represent the uncertain system states and cost functions in terms of finite-dimensional series expansion in the stochastic space.
+
+It is assumed that the uncertain stiffness $k$ is a random variable, i.e, $k = k(\xi)$, where $\xi$ has a known probability distribution. Now, under a different spring constant $k(\xi)$, the system dynamics are given by,
+\begin{equation}
+    m\ddot{x} + k(\xi)x = k(\xi)\left(u^*(t) + \delta u(t,\xi)\right)
+\end{equation}
+where $\delta u(t,\xi)$ is a perturbation to the nominal control law $u^*(t)$ that is designed to account for the uncertainty in the spring stiffness. The goal is to design $\delta u(t,\xi)$ such that the terminal residual energy relative to the desired target state is minimized in expectation and variance over the stochastic space.
+
+To this end, assume that,
+\begin{equation}
+    a \leq k(\xi) \leq b
+\end{equation}
+and parametrize the distribution of $k(\xi)$ using Legendre polynomials $P_i$ as,
+\begin{equation}
+    k(\xi) = k_0 P_0(\xi) + k_1 P_1(\xi) 
+\end{equation}
+with $\xi\sim \mathcal{U}\left[-1,1\right]$ and $k_0 = \frac{a+b}{2}$, $k_1 = \frac{b-a}{2}$. Moreover, the states are parametrized as,
+\begin{equation}
+    x(t;\xi) = \sum_{i=0}^N x_i(t) P_i(\xi)
+\end{equation}
+where $x_i$ are the coefficients of the Polynomial Chaos. The equations of motion are now given by,
+\begin{equation}
+    \sum_{i=0}^N m\ddot{x}_i(t) P_i(\xi) + \left(k_0 P_0(\xi) + k_1 P_1(\xi)\right)\sum_{i=0}^N x_i(t) P_i(\xi) = \left(k_0 P_0(\xi) + k_1 P_1(\xi)\right)\left(u^*(t) + \delta u(t,\xi)\right)
+\end{equation}
+Using Galerkin projections, the equations of motion are projected onto the basis of Legendre polynomials to obtain a system of $N+1$ coupled ordinary differential equations for the coefficients $x_i(t)$, which can be solved to obtain the time evolution of the states under the uncertain spring stiffness. The governing equations of the coefficients $x_i(t)$ are given by,
+\begin{equation}
+    \mathcal{M}\ddot{\vX}(t) + \mathcal{K}\vX(t) = \mathcal{B}\left(u^*(t) + \delta u(t)\right)
+\end{equation}
+where $\vX(t) = [x_0(t), x_1(t), \ldots, x_N(t)]^T$ is the vector of coefficients, and $\mathcal{M}$, $\mathcal{K}$, and $\mathcal{B}$ are matrices obtained from the Galerkin projection, and are given by,
+\begin{equation}
+    \mathcal{M}_{ij} = m\int_{-1}^1 P_i(\xi)P_j(\xi)d\xi, \quad \mathcal{K}_{ij} = \int_{-1}^1 k(\xi)P_i(\xi)P_j(\xi)d\xi, \quad \mathcal{B}_i = \int_{-1}^1 k(\xi)P_i(\xi)d\xi
+\end{equation}
+
+
 
